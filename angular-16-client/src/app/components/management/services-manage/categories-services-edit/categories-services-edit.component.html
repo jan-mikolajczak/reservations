@@ -1,0 +1,45 @@
+<div class="card">
+  <p-table [value]="services" sortField="serviceCategory.categoryName" sortMode="single" dataKey="serviceCategory.categoryName"
+           rowGroupMode="subheader" groupRowsBy="serviceCategory.categoryName" [tableStyle]="{'min-width': '70rem'}">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:20%">Name</th>
+        <th style="width:20%">Cena</th>
+        <th style="width:20%">Czas trwania</th>
+        <th style="width:20%"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="groupheader" let-service let-rowIndex="rowIndex" let-expanded="expanded">
+      <tr>
+        <td colspan="4">
+          <div style="display: flex; align-items: center;">
+            <button type="button" pButton pRipple [pRowToggler]="service" class="p-button-text p-button-rounded p-button-plain mr-2"
+                    [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+            <span class="font-bold ml-2">{{ service.serviceCategory.categoryName }}</span>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="groupfooter" let-service>
+      <tr class="p-rowgroup-footer">
+        <td colspan="5" style="text-align: right">Ilość usług: {{ calculateTotalProducts(service.serviceCategory.categoryName) }}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-service>
+      <tr>
+        <td>
+          {{ service.name }}
+        </td>
+        <td>
+          {{ service.price }}
+        </td>
+        <td>
+          {{ service }}
+        </td>
+        <td>
+          <p-button icon="pi pi-chevron-right" [rounded]="true" [text]="true"></p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

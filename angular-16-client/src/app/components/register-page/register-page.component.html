@@ -1,0 +1,47 @@
+<p-toast></p-toast>
+<div class="flex align-items-center justify-content-center overflow-hidden">
+  <div class="flex flex-column align-items-center justify-content-center">
+    <!--    <img src="assets/layout/images/{{layoutService.config().colorScheme === 'light' ? 'logo-dark' : 'logo-white'}}.svg" alt="Sakai logo" class="mb-5 w-6rem flex-shrink-0">-->
+    <div
+      style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, #A855F7 10%, rgba(33, 150, 243, 0) 30%);">
+      <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
+        <div class="text-center mb-5">
+          <!--          <img src="assets/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3">-->
+          <div class="text-900 text-3xl font-medium mb-3">O Tobie</div>
+          <span class="text-600 font-medium">Podaj kilka podstawowych informacji.</span>
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div class="flex flex-column">
+            <input id="companyName" formControlName="companyName" type="text" placeholder="Nazwa firmy" pInputText class="w-full p-3 md:w-30rem mb-3"
+                   style="padding:1rem">
+
+            <input id="nip" formControlName="nip" type="text" placeholder="NIP" pInputText class="w-full p-3 md:w-30rem mb-3" style="padding:1rem">
+
+            <input id="fullName" formControlName="fullName" type="text" placeholder="Imię i nazwisko" class="w-full p-3 md:w-30rem mb-3" pInputText/>
+
+            <input id="phoneNumber" formControlName="phoneNumber" type="text" placeholder="Numer telefonu" class="w-full p-3 md:w-30rem mb-3" pInputText/>
+
+            <input id="email" formControlName="email" type="text" placeholder="E-mail" class="w-full p-3 md:w-30rem mb-3" pInputText/>
+
+            <p-password formControlName="password" class="mb-3" inputStyleClass="w-full p-3 md:w-30rem" placeholder="Hasło" promptLabel="Wybierz hasło" weakLabel="Zbyt proste" mediumLabel="Średnia złożoność" strongLabel="Złożone hasło" [toggleMask]="true"></p-password>
+
+            <p-password formControlName="confirmPassword" [toggleMask]="true" [feedback]="false" placeholder="Powtórz hasło" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
+<!--            <input id="confirmPassword" formControlName="confirmPassword" type="password" placeholder="Potwierdź hasło" class="w-full p-3 md:w-30rem mb-3" pInputText/>-->
+
+            <div *ngIf="registerForm.get('confirmPassword')?.invalid && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)" class="text-danger">
+              <div *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">Potwierdzenie hasła jest wymagane.</div>
+              <div *ngIf="registerForm.hasError('passwordMismatch')">Hasła nie pasują do siebie.</div>
+            </div>
+
+            <div class="flex align-items-center justify-content-between mb-5 gap-5">
+              <div class="flex align-items-center">
+              </div>
+            </div>
+            <button type="submit" pButton pRipple label="Załóż konto" class="p-button-help w-full p-3 text-xl mt-1"></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="card">
+  <p-galleria class="custom-galeria" [value]="images" [showItemNavigators]="true" [showThumbnails]="false" [showIndicators]="true" [showIndicatorsOnItem]="true"
+              [responsiveOptions]="responsiveOptions"
+              [containerStyle]="{ 'max-width': '800px', 'max-height': '600px', 'margin-top': '2em' }">
+    <ng-template pTemplate="item" let-item>
+      <img [src]="item.itemImageSrc" style="width: 100%; display: block;" alt="Company image"/>
+    </ng-template>
+    <ng-template pTemplate="thumbnail" let-item>
+      <div class="grid grid-nogutter justify-content-center">
+        <img [src]="item.thumbnailImageSrc" style="display: block;" alt="Company thumbnail"/>
+      </div>
+    </ng-template>
+  </p-galleria>
+</div>

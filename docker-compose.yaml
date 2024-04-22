@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  postgresdb:
+    image: 'postgres'
+    volumes:
+      - data:/var/lib/postgresql/data
+    container_name: postgresdb
+    environment:
+      POSTGRES_PASSWORD: gZaU5h5mtOQAIV5
+    ports:
+      - '5432:5432'
+  spring-boot-server:
+    build: ./spring-boot-server
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgresdb
+    container_name: spring-server
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+  angular-16-client:
+    build: ./angular-16-client
+    ports:
+      - '8081:8081'
+    container_name: angular-client
+volumes:
+  data:

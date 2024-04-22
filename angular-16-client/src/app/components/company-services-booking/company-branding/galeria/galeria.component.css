@@ -1,0 +1,11 @@
+/*.custom-galleria .p-galleria .p-galleria-panel-wrapper {*/
+/*  height:  200px !important;*/
+/*}*/
+
+/*::ng-deep .p-galleria {*/
+/*  height:  200px !important;*/
+/*}*/
+
+::ng-deep .p-galleria-indicators {
+  margin-bottom: 0;
+}
