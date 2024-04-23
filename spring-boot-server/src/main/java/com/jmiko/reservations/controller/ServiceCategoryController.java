@@ -1,6 +1,7 @@
 package com.jmiko.reservations.controller;
 
 import com.jmiko.reservations.dto.ServiceCategoryDTO;
+import com.jmiko.reservations.service.VendorService;
 import com.jmiko.reservations.service.impl.ServiceCategoriesServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,27 +15,39 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
-@RequestMapping
+@RequestMapping("/service-categories")
 public class ServiceCategoryController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final ServiceCategoriesServiceImpl productCategoriesService;
+    private final VendorService vendorService;
 
 
-    public ServiceCategoryController(ServiceCategoriesServiceImpl productCategoriesService) {
+    public ServiceCategoryController(ServiceCategoriesServiceImpl productCategoriesService, VendorService vendorService) {
         this.productCategoriesService = productCategoriesService;
+        this.vendorService = vendorService;
     }
 
-    @GetMapping("/product-categories")
-    public ResponseEntity<List<ServiceCategoryDTO>> getProductCategoriesByVendor(@RequestParam Long vendorId) {
+    @GetMapping("/by-vendor")
+    public ResponseEntity<?> getProductCategoriesByVendor(@RequestParam Long vendorId) {
         log.info("Request to get categories for vendor ID: {}", vendorId);
-
-        List<ServiceCategoryDTO> productCategoriesByVendorId = productCategoriesService.getServiceCategoriesByVendorId(vendorId);
-//        List<ProductCategoryDTO> productCategory = productCategoryRepository.findByVendor_VendorId(vendorId);
-
-        if (productCategoriesByVendorId.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
-        } else return new ResponseEntity<>(productCategoriesByVendorId, HttpStatus.OK);
+        if (!vendorService.isVendorExists(vendorId)) {
+            log.error("Vendor with ID: {} does not exist", vendorId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Vendor with ID: " + vendorId + " does not exist!");
+        }
+        try {
+            List<ServiceCategoryDTO> productCategoriesByVendorId = productCategoriesService.getServiceCategoriesByVendorId(vendorId);
+            return ResponseEntity.ok(productCategoriesByVendorId);
+        } catch (Exception e) {
+            log.error("Error while fetching product categories for vendor ID: {}", vendorId, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+        }
     }
+
+    @PostMapping
+    public ServiceCategoryDTO saveCategory(@RequestBody ServiceCategoryDTO serviceCategoryDTO) {
+        return productCategoriesService.createServiceCategory(serviceCategoryDTO);
+    }
+
 }

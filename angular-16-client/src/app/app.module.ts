@@ -38,6 +38,11 @@ import {AuthInterceptorService} from "./services/auth.interceptor.service";
 import {TableModule} from "primeng/table";
 import {DividerModule} from "primeng/divider";
 import { CategoriesServicesEditComponent } from './components/management/services-manage/categories-services-edit/categories-services-edit.component';
+import { ServiceCreateModalComponent } from './components/management/services-manage/service-create-modal/service-create-modal.component';
+import {DialogModule} from "primeng/dialog";
+import {InputSwitchModule} from "primeng/inputswitch";
+import {DropdownModule} from "primeng/dropdown";
+import {DragDropModule} from "primeng/dragdrop";
 
 @NgModule({
   declarations: [
@@ -53,30 +58,35 @@ import { CategoriesServicesEditComponent } from './components/management/service
     GaleriaComponent,
     LoginComponent,
     RegisterPageComponent,
-    CategoriesServicesEditComponent
+    CategoriesServicesEditComponent,
+    ServiceCreateModalComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        FormsModule,
-        HttpClientModule,
-        DataViewModule,
-        RatingModule,
-        TagModule,
-        ButtonModule,
-        GalleriaModule,
-        CardModule,
-        AvatarModule,
-        ReactiveFormsModule,
-        PasswordModule,
-        RippleModule,
-        InputTextModule,
-        CheckboxModule,
-        ToastModule,
-        BrowserAnimationsModule,
-        TableModule,
-        DividerModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    DataViewModule,
+    RatingModule,
+    TagModule,
+    ButtonModule,
+    GalleriaModule,
+    CardModule,
+    AvatarModule,
+    ReactiveFormsModule,
+    PasswordModule,
+    RippleModule,
+    InputTextModule,
+    CheckboxModule,
+    ToastModule,
+    BrowserAnimationsModule,
+    TableModule,
+    DividerModule,
+    DialogModule,
+    InputSwitchModule,
+    DropdownModule,
+    DragDropModule
+  ],
   providers: [ServiceService, CompanyBrandingService, MessageService, {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptorService,

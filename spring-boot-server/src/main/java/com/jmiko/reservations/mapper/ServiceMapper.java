@@ -3,6 +3,7 @@ package com.jmiko.reservations.mapper;
 import com.jmiko.reservations.dto.ServiceCategoryDTO;
 import com.jmiko.reservations.dto.ServiceDTO;
 import com.jmiko.reservations.model.Service;
+import com.jmiko.reservations.model.ServiceCategory;
 import org.springframework.beans.BeanUtils;
 
 import java.util.Objects;
@@ -12,6 +13,9 @@ public class ServiceMapper {
     public Service fromServiceDTO(ServiceDTO serviceDto) {
         Service service = new Service();
         BeanUtils.copyProperties(serviceDto, service);
+        if (Objects.nonNull(serviceDto.getServiceCategory())) {
+            service.setCategory(new ServiceCategory(serviceDto.getServiceCategory().getId(), serviceDto.getServiceCategory().getCategoryName(), serviceDto.getServiceCategory().getDescription(), serviceDto.getServiceCategory().isActive()));
+        }
         return service;
     }
 

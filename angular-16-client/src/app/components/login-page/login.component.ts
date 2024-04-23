@@ -26,6 +26,7 @@ export class LoginComponent {
     if (this.loginForm.invalid) return;
     this.authService.login(this.loginForm.value).subscribe({
       next: loginResponse => {
+        console.log(loginResponse);
         this.authService.saveToken(loginResponse);
         this.messageService.add({severity: 'success', summary: 'Success', detail: 'Logowanie powiodło się'});
         this.router.navigate(['/manage/services']);

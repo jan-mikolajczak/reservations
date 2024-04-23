@@ -42,13 +42,11 @@ public class ServiceCategory {
 
     public ServiceCategory() { }
 
-    public ServiceCategory(String categoryName, String description, boolean active, Date dateCreated, Date lastUpdated, Vendor vendor) {
+    public ServiceCategory(Long id, String categoryName, String description, boolean active) {
+        this.id = id;
         this.categoryName = categoryName;
         this.description = description;
         this.active = active;
-        this.dateCreated = dateCreated;
-        this.lastUpdated = lastUpdated;
-        this.vendor = vendor;
     }
 
     public Long getId() {

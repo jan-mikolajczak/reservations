@@ -33,11 +33,12 @@ public class ServiceCategoriesServiceImpl implements ServiceCategoriesService {
     }
 
     @Override
-    public void createServiceCategory(ServiceCategoryDTO serviceCategoryDTO) {
+    public ServiceCategoryDTO createServiceCategory(ServiceCategoryDTO serviceCategoryDTO) {
         ServiceCategory serviceCategory = serviceCategoryMapper.fromServiceCategoryDTO(serviceCategoryDTO);
         Vendor vendor = vendorRepository.findByVendorId(serviceCategoryDTO.getVendorDTO().getVendorId()).orElseThrow(() -> new EntityNotFoundException("Vendor with ID " + serviceCategoryDTO.getVendorDTO().getVendorId() + " not found"));
         serviceCategory.setVendor(vendor);
-        serviceCategoryRepository.save(serviceCategory);
+        ServiceCategory save = serviceCategoryRepository.save(serviceCategory);
+        return serviceCategoryMapper.fromServiceCategory(save);
     }
 
     @Override

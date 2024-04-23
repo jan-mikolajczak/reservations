@@ -7,12 +7,12 @@ import {ServiceCategoryDTO} from "../models/service-category.model";
 @Injectable({
   providedIn: 'root'
 })
-export class ProductCategoryService {
+export class ServiceCategoryService {
 
   constructor(private http: HttpClient) {}
 
   getCategoriesByVendorId(vendorId: number | undefined): Observable<ServiceCategoryDTO[]> {
-    return this.http.get<ServiceCategoryDTO[]>(`${URL}/product-categories?vendorId=` + vendorId);
+    return this.http.get<ServiceCategoryDTO[]>(`${URL}/service-categories/by-vendor?vendorId=` + vendorId);
   }
 
 }

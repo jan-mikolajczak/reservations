@@ -9,6 +9,8 @@ import {VendorDTO} from "../models/vendor.model";
 })
 export class VendorService {
 
+  vendorData?: VendorDTO | undefined;
+
   constructor(private http: HttpClient) {
   }
 

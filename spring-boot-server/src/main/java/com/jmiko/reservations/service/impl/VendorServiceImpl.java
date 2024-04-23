@@ -60,4 +60,9 @@ public class VendorServiceImpl implements VendorService {
         user.getRoles().add(role);
         userRepository.save(user);
     }
+
+    @Override
+    public boolean isVendorExists(Long id) {
+        return this.vendorRepository.findByVendorId(id).isPresent();
+    }
 }

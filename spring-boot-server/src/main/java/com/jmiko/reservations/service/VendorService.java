@@ -8,4 +8,6 @@ public interface VendorService {
     void createVendor(VendorDTO vendorDTO);
 
     void createVendor(RegisterVendorDTO registerVendorDTO);
+
+    boolean isVendorExists(Long id);
 }

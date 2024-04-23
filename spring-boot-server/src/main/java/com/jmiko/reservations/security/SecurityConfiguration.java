@@ -1,8 +1,10 @@
 package com.jmiko.reservations.security;
 
+import com.jmiko.reservations.config.UserRole;
 import com.jmiko.reservations.filter.JWTAuthenticationFilter;
 import com.jmiko.reservations.filter.JWTAuthorizationFilter;
 import com.jmiko.reservations.helper.JWTHelper;
+import com.jmiko.reservations.model.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,6 +46,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/refresh-token/**").permitAll()
                         .requestMatchers("/register-vendor").permitAll()
                         .requestMatchers("/get-vendor").permitAll()
+                        .requestMatchers("/service").hasAnyAuthority(UserRole.MANAGER.name())
                         .anyRequest()
                         .authenticated())
                 .cors(withDefaults())
@@ -68,10 +71,10 @@ public class SecurityConfiguration {
         configuration.setAllowedOrigins(List.of("http://localhost:8081"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList("Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", "Origin", "Cache-Control", "Content-Type", "Authorization"));
-        configuration.setAllowedMethods(Arrays.asList("DELETE","GET","POST","PATCH","PUT"));
+        configuration.setAllowedMethods(Arrays.asList("DELETE", "GET", "POST", "PATCH", "PUT"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**",configuration);
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 

@@ -1,4 +1,10 @@
 <div class="card">
+  <div class="flex">
+    <div class="text-3xl font-medium text-900 mb-3 p-4">Usługi</div>
+    <div class="p-4">
+      <service-create-modal></service-create-modal>
+    </div>
+  </div>
   <p-table [value]="services" sortField="serviceCategory.categoryName" sortMode="single" dataKey="serviceCategory.categoryName"
            rowGroupMode="subheader" groupRowsBy="serviceCategory.categoryName" [tableStyle]="{'min-width': '70rem'}">
     <ng-template pTemplate="header">
@@ -22,7 +28,9 @@
     </ng-template>
     <ng-template pTemplate="groupfooter" let-service>
       <tr class="p-rowgroup-footer">
-        <td colspan="5" style="text-align: right">Ilość usług: {{ calculateTotalProducts(service.serviceCategory.categoryName) }}</td>
+        <td colspan="3">
+        </td>
+        <td colspan="2" style="text-align: right">Ilość usług: {{ calculateTotalProducts(service.serviceCategory.categoryName) }}</td>
       </tr>
     </ng-template>
     <ng-template pTemplate="rowexpansion" let-service>
@@ -37,7 +45,7 @@
           {{ service }}
         </td>
         <td>
-          <p-button icon="pi pi-chevron-right" [rounded]="true" [text]="true"></p-button>
+          <p-button (onClick)="editService(service)" icon="pi pi-chevron-right" [rounded]="true" [text]="true"></p-button>
         </td>
       </tr>
     </ng-template>

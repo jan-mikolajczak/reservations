@@ -1,0 +1,40 @@
+<div>
+  <p-toast></p-toast>
+  <div class="flex">
+    <button type="button" (click)="showDialog()" pButton icon="pi pi-plus" label="Nowa usługa"></button>
+  </div>
+  <p-dialog header="Dodaj usługę" [resizable]="false" [modal]="true" [maximizable]="true" appendTo="body" [(visible)]="dialogVisible"
+            [style]="{width: '75vw'}" [contentStyle]="{height: '300px'}">
+    <form [formGroup]="serviceForm">
+      <div class="p-fluid p-formgrid grid">
+        <div class="field col-12 md:col-6">
+          <input id="name" type="text" formControlName="name" placeholder="Nazwa" pInputText/>
+        </div>
+        <div class="field col-12 md:col-6">
+          <input id="description" type="text" formControlName="description" placeholder="Opis" pInputText/>
+        </div>
+        <div class="field col-12 md:col-6">
+          <input id="price" type="text" formControlName="price" placeholder="Cena" pInputText/>
+        </div>
+        <div class="field col-12 md:col-6">
+          <p-dropdown id="serviceCategory" formControlName="serviceCategory" [options]="categories" [showClear]="true" optionLabel="categoryName" placeholder="Wybierz kategorię"
+                      [styleClass]="serviceForm.controls['serviceCategory'].invalid && serviceForm.controls['serviceCategory'].dirty ? 'border-red-500' : '' ">
+          </p-dropdown>
+        </div>
+        <div style="display: flex; align-items: center;">
+          <label class="pr-2" for="active">Aktywna:</label>
+          <p-inputSwitch id="active" formControlName="active"></p-inputSwitch>
+        </div>
+      </div>
+      <div class="flex align-items-center justify-content-between mb-5 gap-5">
+        <div class="flex align-items-center">
+        </div>
+      </div>
+
+    </form>
+    <ng-template pTemplate="footer">
+      <p-button type="button" icon="pi pi-check" [text]="true" (click)="onSave(serviceForm)" label="Dodaj" class="p-button-text"></p-button>
+      <p-button type="button" icon="pi pi-times" [text]="true" (click)="dialogVisible=false" label="Anuluj" class="p-button-text" severity="secondary"></p-button>
+    </ng-template>
+  </p-dialog>
+</div>

@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
-@RequestMapping("/services")
+@RequestMapping("/service")
 public class ServiceController {
 
 	private final ServiceRepository serviceRepository;
@@ -56,7 +57,15 @@ public class ServiceController {
 		List<ServiceDTO> productsByVendorId = serviceService.getServicesByVendorId(vendorId);
 		if (productsByVendorId.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
-		} else return new ResponseEntity<>(productsByVendorId, HttpStatus.OK);
+		} else {
+			productsByVendorId.sort(Comparator.comparingLong(ServiceDTO::getId).reversed());
+			return new ResponseEntity<>(productsByVendorId, HttpStatus.OK);
+		}
+	}
+
+	@PostMapping
+	public ServiceDTO saveCategory(@RequestBody ServiceDTO serviceDTO) {
+		return serviceService.createService(serviceDTO);
 	}
 
 }

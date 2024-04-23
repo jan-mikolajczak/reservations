@@ -35,6 +35,12 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
+    public ServiceDTO createService(ServiceDTO serviceDto) {
+        Service service = serviceMapper.fromServiceDTO(serviceDto);
+        return serviceMapper.fromService(serviceRepository.save(service));
+    }
+
+    @Override
     public List<ServiceDTO> getServicesByVendorId(Long vendorId) {
         return serviceRepository.findAllByCategory_Vendor_VendorId(vendorId).stream().map(serviceMapper::fromService).collect(Collectors.toList());
 
