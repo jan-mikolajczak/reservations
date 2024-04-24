@@ -37,12 +37,18 @@ import {RegisterPageComponent} from './components/register-page/register-page.co
 import {AuthInterceptorService} from "./services/auth.interceptor.service";
 import {TableModule} from "primeng/table";
 import {DividerModule} from "primeng/divider";
-import { CategoriesServicesEditComponent } from './components/management/services-manage/categories-services-edit/categories-services-edit.component';
-import { ServiceCreateModalComponent } from './components/management/services-manage/service-create-modal/service-create-modal.component';
+import {
+  CategoriesServicesEditComponent
+} from './components/management/services-manage/categories-services-edit/categories-services-edit.component';
+import {ServiceCreateModalComponent} from './components/management/services-manage/service-create-modal/service-create-modal.component';
 import {DialogModule} from "primeng/dialog";
 import {InputSwitchModule} from "primeng/inputswitch";
 import {DropdownModule} from "primeng/dropdown";
 import {DragDropModule} from "primeng/dragdrop";
+import {CalendarComponent} from './components/management/calendar/calendar/calendar.component';
+import {CalendarModule, DateAdapter} from "angular-calendar";
+import {adapterFactory} from 'angular-calendar/date-adapters/date-fns';
+
 
 @NgModule({
   declarations: [
@@ -59,7 +65,8 @@ import {DragDropModule} from "primeng/dragdrop";
     LoginComponent,
     RegisterPageComponent,
     CategoriesServicesEditComponent,
-    ServiceCreateModalComponent
+    ServiceCreateModalComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,
@@ -85,7 +92,12 @@ import {DragDropModule} from "primeng/dragdrop";
     DialogModule,
     InputSwitchModule,
     DropdownModule,
-    DragDropModule
+    DragDropModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    })
+
   ],
   providers: [ServiceService, CompanyBrandingService, MessageService, {
     provide: HTTP_INTERCEPTORS,

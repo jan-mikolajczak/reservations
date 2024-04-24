@@ -9,6 +9,7 @@ import {RegisterPageComponent} from "./components/register-page/register-page.co
 import {
   CategoriesServicesEditComponent
 } from "./components/management/services-manage/categories-services-edit/categories-services-edit.component";
+import {CalendarComponent} from "./components/management/calendar/calendar/calendar.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'tutorials', pathMatch: 'full'},
@@ -18,7 +19,8 @@ const routes: Routes = [
   {path: 'book', component: CompanyServicesBookingComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterPageComponent},
-  {path: 'manage/services', component: CategoriesServicesEditComponent}
+  {path: 'manage/services', component: CategoriesServicesEditComponent},
+  {path: 'manage/calendar', component: CalendarComponent}
 ];
 
 @NgModule({
