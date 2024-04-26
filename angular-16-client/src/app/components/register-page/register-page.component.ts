@@ -3,6 +3,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/form
 import {AuthService} from "../../services/auth.service";
 import {MessageService} from "primeng/api";
 import {RegisterService} from "../../services/register.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register-page',
@@ -13,7 +14,12 @@ export class RegisterPageComponent {
   registerForm: FormGroup;
   submitted: boolean = false;
 
-  constructor(private fb: FormBuilder, private registerService: RegisterService, private messageService: MessageService) {
+  constructor(
+    private fb: FormBuilder,
+    private registerService: RegisterService,
+    private messageService: MessageService,
+    private router: Router
+  ) {
     this.registerForm = this.fb.group({
       companyName: ["", Validators.required],
       nip: ["", Validators.required],
@@ -31,6 +37,7 @@ export class RegisterPageComponent {
     this.registerService.registerUser(this.registerForm.value).subscribe({
       next: loginResponse => {
         this.messageService.add({severity: 'success', summary: 'Success', detail: 'Konto założone'});
+        this.router.navigate(['/login']);
       },
       error: err => {
         this.messageService.add({severity: 'error', summary: 'Error', detail: err.error});

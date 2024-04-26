@@ -21,7 +21,8 @@ export class ServiceCreateModalComponent implements OnInit {
               private serviceCategoryService: ServiceCategoryService,
               private vendorService: VendorService,
               private messageService: MessageService,
-              private serviceService: ServiceService) {
+              private serviceService: ServiceService
+  ) {
     this.serviceForm = this.fb.group({
       name: ["", Validators.required],
       description: ["", Validators.required],

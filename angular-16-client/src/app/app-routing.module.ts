@@ -12,7 +12,7 @@ import {
 import {CalendarComponent} from "./components/management/calendar/calendar/calendar.component";
 
 const routes: Routes = [
-  {path: '', redirectTo: 'tutorials', pathMatch: 'full'},
+  {path: '', redirectTo: 'book', pathMatch: 'full'},
   {path: 'tutorials', component: TutorialsListComponent},
   {path: 'tutorials/:id', component: TutorialDetailsComponent},
   {path: 'add', component: AddTutorialComponent},

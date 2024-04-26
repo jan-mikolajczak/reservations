@@ -46,8 +46,11 @@ import {InputSwitchModule} from "primeng/inputswitch";
 import {DropdownModule} from "primeng/dropdown";
 import {DragDropModule} from "primeng/dragdrop";
 import {CalendarComponent} from './components/management/calendar/calendar/calendar.component';
-import {CalendarModule, DateAdapter} from "angular-calendar";
+import {CalendarModule as AngularCalendarModule, DateAdapter} from "angular-calendar";
 import {adapterFactory} from 'angular-calendar/date-adapters/date-fns';
+import {DialogService} from "primeng/dynamicdialog";
+import {AddAppointmentDialogComponent} from "./components/management/calendar/add-appointment-dialog/add-appointment-dialog.component";
+import {CalendarModule as PrimeNGCalendarModule} from "primeng/calendar";
 
 
 @NgModule({
@@ -66,7 +69,8 @@ import {adapterFactory} from 'angular-calendar/date-adapters/date-fns';
     RegisterPageComponent,
     CategoriesServicesEditComponent,
     ServiceCreateModalComponent,
-    CalendarComponent
+    CalendarComponent,
+    AddAppointmentDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -93,13 +97,15 @@ import {adapterFactory} from 'angular-calendar/date-adapters/date-fns';
     InputSwitchModule,
     DropdownModule,
     DragDropModule,
-    CalendarModule.forRoot({
+    AngularCalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
-    })
+    }),
+    AngularCalendarModule,
+    PrimeNGCalendarModule
 
   ],
-  providers: [ServiceService, CompanyBrandingService, MessageService, {
+  providers: [ServiceService, CompanyBrandingService, MessageService, DialogService, {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptorService,
     multi: true
