@@ -1,6 +1,6 @@
-# Spring Boot + Angular 16 + PostgreSQL CRUD Reservations
+# Spring Boot + Angular 16 + PostgreSQL
 
-Full-stack Angular 16 + Spring Boot  CRUD Application with PostgreSQL database in that.
+Full-stack Angular 16 + Spring Boot No Reservations Application with PostgreSQL database.
 
 ![reservations.png](reservations.png)
 

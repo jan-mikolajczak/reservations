@@ -1,7 +1,10 @@
 package com.jmiko.reservations.service.impl;
 
 import com.jmiko.reservations.config.UserRole;
+import com.jmiko.reservations.dto.EmployeeDTO;
 import com.jmiko.reservations.dto.UserDTO;
+import com.jmiko.reservations.dto.VendorDTO;
+import com.jmiko.reservations.mapper.EmployeeMapper;
 import com.jmiko.reservations.mapper.UserMapper;
 import com.jmiko.reservations.model.Role;
 import com.jmiko.reservations.model.User;
@@ -15,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,13 +29,15 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
+    private final EmployeeMapper employeeMapper;
     private final VendorRepository vendorRepository;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, UserMapper userMapper, VendorRepository vendorRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, UserMapper userMapper, EmployeeMapper employeeMapper, VendorRepository vendorRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.userMapper = userMapper;
+        this.employeeMapper = employeeMapper;
         this.vendorRepository = vendorRepository;
     }
 
@@ -76,6 +82,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getVendorByLogin(String login) {
         return userRepository.findByEmail(login).stream().map(user -> userMapper.fromUser(user)).collect(Collectors.toList()).stream().findFirst().orElseThrow(() -> new EntityNotFoundException("User Not Found " + login));
+    }
+
+    @Override
+    public List<EmployeeDTO> getVendorUsers(Long vendorId) {
+        return userRepository.findByVendor_VendorId(vendorId).stream().map(employeeMapper::fromUser).toList();
     }
 
 }

@@ -45,7 +45,6 @@ export class ServiceCreateModalComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.categories = data;
-          console.log(data);
         },
         error: (err) => this.messageService.add({severity: 'error', summary: 'Error', detail: err.error})
       });

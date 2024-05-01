@@ -47,6 +47,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/register-vendor").permitAll()
                         .requestMatchers("/get-vendor").permitAll()
                         .requestMatchers("/service").hasAnyAuthority(UserRole.MANAGER.name())
+                        .requestMatchers("/vendor-employees").hasAuthority(UserRole.MANAGER.name())
                         .anyRequest()
                         .authenticated())
                 .cors(withDefaults())

@@ -4,6 +4,10 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CalendarEvent} from "angular-calendar";
 import {AppointmentService} from "../../../../services/appointment.service";
 import {MessageService} from "primeng/api";
+import {ServiceCategoryDTO} from "../../../../models/service-category.model";
+import {EmployeeDTO} from "../../../../models/employee.model";
+import {EmployeesService} from "../../../../services/employees.service";
+import {AuthService} from "../../../../services/auth.service";
 
 @Component({
   selector: 'app-add-appointment-dialog',
@@ -14,20 +18,26 @@ import {MessageService} from "primeng/api";
 export class AddAppointmentDialogComponent implements OnInit {
 
   appointmentForm: FormGroup;
+  employees: EmployeeDTO[] | undefined;
+
 
   constructor(protected ref: DynamicDialogRef,
               private fb: FormBuilder,
               private appointmentService: AppointmentService,
-              private messageService: MessageService
+              private messageService: MessageService,
+              private employeesService: EmployeesService,
+              protected authService: AuthService
   ) {
     this.appointmentForm = this.fb.group({
       start: ["", Validators.required],
       end: ["", Validators.required],
-      title: ["", Validators.required]
+      title: ["", Validators.required],
+      employees: [null, Validators.required]
     });
   }
 
   ngOnInit(): void {
+    this.employees = this.employeesService.employees;
   }
 
   // Metoda do zamykania modala i przekazywania danych z powrotem do komponentu nadrzędnego

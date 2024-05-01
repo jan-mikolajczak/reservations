@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jmiko.reservations.dto.UserDTO;
+import com.jmiko.reservations.dto.EmployeeDTO;
 import com.jmiko.reservations.dto.VendorDTO;
 import com.jmiko.reservations.helper.JWTHelper;
 import com.jmiko.reservations.model.Role;
@@ -16,10 +17,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -81,4 +84,15 @@ public class UserController {
             return ResponseEntity.ok(vendor);
         }
     }
+
+    @GetMapping("/vendor-employees")
+    public ResponseEntity<List<EmployeeDTO>> getVendorUsers(@RequestParam Long vendorId) {
+        try {
+            List<EmployeeDTO> vendorUsers = userService.getVendorUsers(vendorId);
+            return ResponseEntity.ok(vendorUsers);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 }
+

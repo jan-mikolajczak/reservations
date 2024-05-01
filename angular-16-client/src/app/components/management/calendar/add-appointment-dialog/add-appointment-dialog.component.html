@@ -21,6 +21,12 @@
     <div class="field col-12 md:col-6">
       <p-calendar formControlName="end" appendTo="body" [touchUI]="true" [showTime]="true" [showIcon]="true"></p-calendar>
     </div>
+    <div class="field col-12 md:col-6">
+      <p-dropdown *ngIf="authService.isManager" id="employees" formControlName="employees" [options]="employees" [showClear]="true" optionLabel="name" placeholder="Wybierz pracownika"
+                  [styleClass]="appointmentForm.controls['employees'].invalid && appointmentForm.controls['employees'].dirty ? 'border-red-500' : '' ">
+      </p-dropdown>
+    </div>
+
   </div>
 
 

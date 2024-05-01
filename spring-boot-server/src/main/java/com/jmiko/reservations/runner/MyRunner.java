@@ -49,6 +49,7 @@ public class MyRunner implements CommandLineRunner {
         createServices();
         createRoles();
         createManager();
+        createTestUser();
     }
 
 
@@ -62,13 +63,27 @@ public class MyRunner implements CommandLineRunner {
         userDTO.setCompanyName("Company name");
         userDTO.setPassword("password");
         userDTO.setPhoneNumber("123456789");
-        userDTO.setEmail("test@test.pl");
+        userDTO.setEmail("manager@test.pl");
         userDTO.setName("Manager Manager");
         VendorDTO vendorDTO = new VendorDTO();
         vendorDTO.setVendorId(1L);
         userDTO.setVendor(vendorDTO);
         userService.createUser(userDTO);
         userService.assignRoleToUser(userDTO, UserRole.MANAGER);
+    }
+
+    private void createTestUser() {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setCompanyName("Company name");
+        userDTO.setPassword("password");
+        userDTO.setPhoneNumber("123456789");
+        userDTO.setEmail("employee@test.pl");
+        userDTO.setName("Employee Kowalski");
+        VendorDTO vendorDTO = new VendorDTO();
+        vendorDTO.setVendorId(1L);
+        userDTO.setVendor(vendorDTO);
+        userService.createUser(userDTO);
+        userService.assignRoleToUser(userDTO, UserRole.EMPLOYEE);
     }
 
 

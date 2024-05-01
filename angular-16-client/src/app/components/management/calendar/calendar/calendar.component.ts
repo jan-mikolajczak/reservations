@@ -6,6 +6,10 @@ import {Subject} from "rxjs";
 import {isSameDay, isSameMonth} from "date-fns";
 import {AddAppointmentDialogComponent} from "../add-appointment-dialog/add-appointment-dialog.component";
 import {DialogService} from "primeng/dynamicdialog";
+import {EmployeesService} from "../../../../services/employees.service";
+import {VendorService} from "../../../../services/vendor.service";
+import {AuthService} from "../../../../services/auth.service";
+import {UserRole} from "../../../../constants/role.constants";
 
 @Component({
   selector: 'app-calendar',
@@ -27,8 +31,12 @@ export class CalendarComponent implements OnInit {
   constructor(
     private appointmentService: AppointmentService,
     private messageService: MessageService,
-    private dialogService: DialogService
-  ) {}
+    private dialogService: DialogService,
+    private employeesService: EmployeesService,
+    private vendorService: VendorService,
+    private authService: AuthService
+  ) {
+  }
 
   ngOnInit(): void {
     this.loadAppointments();
@@ -38,7 +46,7 @@ export class CalendarComponent implements OnInit {
     this.view = view;
   }
 
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+  dayClicked({date, events}: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen) ||
@@ -72,7 +80,7 @@ export class CalendarComponent implements OnInit {
 
   handleEvent(action: string, event: CalendarEvent): void {
     console.log("eventClicked");
-    this.modalData = { event, action };
+    this.modalData = {event, action};
     // this.modal.open(this.modalContent, { size: 'lg' });
   }
 
@@ -95,20 +103,44 @@ export class CalendarComponent implements OnInit {
   }
 
   openAddAppointmentDialog(): void {
+    if (this.vendorService.vendorData === undefined) {
+      this.vendorService.getVendorByUserLogin(this.authService.getLoggedUser()?.username)
+        .subscribe({
+          next: (data) => {
+            this.vendorService.vendorData = data;
+            this.openModal();
+          },
+          error: (err) => this.messageService.add({severity: 'error', summary: 'Coś poszło nie tak', detail: err})
+        });
+    } else {
+      this.openModal();
+    }
+  }
+
+  private openModal() {
+    if (this.authService.isManager) {
+      this.employeesService.getVendorEmployeesByVendorId(this.vendorService.vendorData?.vendorId)
+        .subscribe({
+          next: (data) => {
+            this.employeesService.employees = data;
+            this.viewModal();
+          },
+          error: (err) => this.messageService.add({severity: 'error', summary: 'Nie udało się pobrać pracowników', detail: err.error})
+        });
+    } else {
+      this.viewModal();
+    }
+  }
+
+  private viewModal() {
     const ref = this.dialogService.open(AddAppointmentDialogComponent, {
-      // header: 'Dodaj nowy termin przez serwis', // Nagłówek modala
-      // width: '400px', // Szerokość modala
-      // height: '700px',
-      // contentStyle: { 'max-height': '350px', 'overflow': 'auto' }, // Styl treści modala
-      baseZIndex: 9999, // Bazowy indeks warstwy zabezpieczającej
-      // closable: false, // Czy modala można zamknąć przez ikonę zamykania
-      closeOnEscape: true, // Czy modala można zamknąć przez naciśnięcie klawisza Escape
-      // dismissableMask: true // Czy modala można zamknąć przez kliknięcie na tło
+      baseZIndex: 9999,
+      closeOnEscape: true,
       maximizable: true
     });
     ref.onClose.subscribe(() => {
       this.loadAppointments();
-    })
-    // this.addAppointmentDialogComponent.openDialog();
+    });
   }
+
 }

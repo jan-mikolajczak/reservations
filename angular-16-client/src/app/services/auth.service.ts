@@ -16,6 +16,8 @@ export class AuthService {
   jwtHelperService = new JwtHelperService();
   user = new BehaviorSubject<LoggedUser | null>(null);
   tokenExpirationTimer: any;
+  isManager = false;
+  isEmployee = false;
 
   constructor(private http: HttpClient, private router: Router) {
   }
@@ -34,7 +36,8 @@ export class AuthService {
     console.log(loggedUser);
     this.user.next(loggedUser);
     this.redirectLoggedInUser(decodedAccessToken, jwtTokens.accessToken);
-    this.autoLogout(this.getExpirationDate(decodedAccessToken.exp).valueOf() - new Date().valueOf())
+    this.autoLogout(this.getExpirationDate(decodedAccessToken.exp).valueOf() - new Date().valueOf());
+    this.setRole();
     // localStorage.setItem('userData', JSON.stringify(loggedUser));
     // this.redirectLoggedInUser(decodedAccessToken, jwtTokens.accessToken)
   }
@@ -43,6 +46,14 @@ export class AuthService {
     const date = new Date(0);
     date.setUTCSeconds(exp)
     return date;
+  }
+
+  setRole() {
+    if (this.getLoggedUser()?.roles.includes(UserRole.MANAGER)) {
+      this.isManager = true;
+    } else if (this.getLoggedUser()?.roles.includes(UserRole.EMPLOYEE)) {
+      this.isEmployee = true;
+    }
   }
 
   redirectLoggedInUser(decodedToken: any, accessToken: string) {
