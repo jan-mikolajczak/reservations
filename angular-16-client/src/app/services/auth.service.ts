@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {URL} from "../app.constants";
 import {LoginRequest, LoginResponse} from "../models/login.model";
 import {JwtHelperService} from "@auth0/angular-jwt";
@@ -11,15 +11,24 @@ import {Router} from "@angular/router";
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements OnDestroy {
 
   jwtHelperService = new JwtHelperService();
   user = new BehaviorSubject<LoggedUser | null>(null);
   tokenExpirationTimer: any;
   isManager = false;
   isEmployee = false;
+  userSub!: Subscription;
+  isAuthenticated = false;
 
   constructor(private http: HttpClient, private router: Router) {
+    this.initRoles();
+  }
+
+  ngOnDestroy() {
+    if (this.userSub) {
+      this.userSub.unsubscribe();
+    }
   }
 
   public login(user: LoginRequest): Observable<LoginResponse> {
@@ -37,8 +46,6 @@ export class AuthService {
     this.user.next(loggedUser);
     this.redirectLoggedInUser(decodedAccessToken, jwtTokens.accessToken);
     this.autoLogout(this.getExpirationDate(decodedAccessToken.exp).valueOf() - new Date().valueOf());
-    this.setRole();
-    // localStorage.setItem('userData', JSON.stringify(loggedUser));
     // this.redirectLoggedInUser(decodedAccessToken, jwtTokens.accessToken)
   }
 
@@ -46,14 +53,6 @@ export class AuthService {
     const date = new Date(0);
     date.setUTCSeconds(exp)
     return date;
-  }
-
-  setRole() {
-    if (this.getLoggedUser()?.roles.includes(UserRole.MANAGER)) {
-      this.isManager = true;
-    } else if (this.getLoggedUser()?.roles.includes(UserRole.EMPLOYEE)) {
-      this.isEmployee = true;
-    }
   }
 
   redirectLoggedInUser(decodedToken: any, accessToken: string) {
@@ -113,4 +112,26 @@ export class AuthService {
     }
   }
 
+  initRoles(): void {
+    this.userSub = this.user.subscribe(data => {
+      this.isAuthenticated = !!data;
+      if (!this.isAuthenticated) {
+        this.initializeState();
+      } else if (!!data)
+        this.setRole(data);
+    })
+  }
+
+  initializeState() {
+    this.isEmployee = false;
+    this.isManager = false;
+  }
+
+  setRole(loggedUser: LoggedUser) {
+    if (loggedUser?.roles.includes(UserRole.MANAGER)) {
+      this.isManager = true;
+    } else if (loggedUser?.roles.includes(UserRole.EMPLOYEE)) {
+      this.isEmployee = true;
+    }
+  }
 }

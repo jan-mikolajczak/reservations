@@ -1,5 +1,6 @@
 package com.jmiko.reservations.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,12 @@ public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
+
     @Column(name = "start_time", nullable = false)
     private LocalDateTime start;
 
@@ -72,6 +79,14 @@ public class Appointment {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

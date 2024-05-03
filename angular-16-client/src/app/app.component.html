@@ -11,10 +11,10 @@
       <li class="nav-item">
         <a routerLink="book" class="nav-link">Book</a>
       </li>
-      <li class="nav-item">
+      <li *ngIf="authService.isAuthenticated" class="nav-item">
         <a routerLink="manage/services" class="nav-link">Usługi</a>
       </li>
-      <li class="nav-item">
+      <li *ngIf="authService.isAuthenticated" class="nav-item">
         <a routerLink="manage/calendar" class="nav-link">Terminarz</a>
       </li>
     </div>

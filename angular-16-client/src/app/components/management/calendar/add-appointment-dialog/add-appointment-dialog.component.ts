@@ -4,10 +4,10 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CalendarEvent} from "angular-calendar";
 import {AppointmentService} from "../../../../services/appointment.service";
 import {MessageService} from "primeng/api";
-import {ServiceCategoryDTO} from "../../../../models/service-category.model";
 import {EmployeeDTO} from "../../../../models/employee.model";
-import {EmployeesService} from "../../../../services/employees.service";
 import {AuthService} from "../../../../services/auth.service";
+import {EmployeesService} from "../../../../services/employees.service";
+import {AppointmentDTO} from "../../../../models/appointment.model";
 
 @Component({
   selector: 'app-add-appointment-dialog',
@@ -49,10 +49,12 @@ export class AddAppointmentDialogComponent implements OnInit {
     const startDate = new Date(appointmentForm.value.start);
     const endDate = new Date(appointmentForm.value.end);
 
-    const newAppointment: CalendarEvent = {
+    const newAppointment: AppointmentDTO = {
+      id: null,
       start: startDate,
       end: endDate,
       title: appointmentForm.value.title,
+      userId: appointmentForm.value.employees.userId
     };
 
     this.appointmentService.addAppointment(newAppointment)

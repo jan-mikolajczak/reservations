@@ -6,10 +6,9 @@ import {Subject} from "rxjs";
 import {isSameDay, isSameMonth} from "date-fns";
 import {AddAppointmentDialogComponent} from "../add-appointment-dialog/add-appointment-dialog.component";
 import {DialogService} from "primeng/dynamicdialog";
-import {EmployeesService} from "../../../../services/employees.service";
 import {VendorService} from "../../../../services/vendor.service";
 import {AuthService} from "../../../../services/auth.service";
-import {UserRole} from "../../../../constants/role.constants";
+import {EmployeesService} from "../../../../services/employees.service";
 
 @Component({
   selector: 'app-calendar',
@@ -61,6 +60,7 @@ export class CalendarComponent implements OnInit {
   }
 
   private loadAppointments(): void {
+    console.log("pobieranie terminów")
     this.appointmentService.getAppointments()
       .subscribe({
         next: (appointments) => {

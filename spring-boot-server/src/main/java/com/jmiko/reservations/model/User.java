@@ -36,7 +36,14 @@ public class User {
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Appointment> appointments;
+
     public User() {
+    }
+
+    public User(Long userId) {
+        this.userId = userId;
     }
 
     public User(Long userId, String name, String email, String password, String phoneNumber, Set<Role> roles, Vendor vendor) {
@@ -103,6 +110,14 @@ public class User {
 
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
+    }
+
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
     }
 
     @Override
